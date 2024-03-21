@@ -21,7 +21,7 @@ export default async function recordUser(user: string, output?: string) {
   const fileResponse = await fetch(url);
   if (fileResponse.body) {
     window.recording[user] = true;
-    console.log(`Started recording ${user}...`);
+    console.log(`\x1b[32mStarted recording ${user}...\x1b[0m`);
 
     const file = await Deno.open(filename(user, output), { write: true, create: true }).catch(
       () => {
