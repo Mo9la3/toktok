@@ -24,7 +24,7 @@ export default function watchUsers(usersstr: string, output?: string) {
     }
     
 
-    setTimeout(watchUsersIter, 180000);
+    setTimeout(watchUsersIter, 30000);
   };
 
   watchUsersIter();
