@@ -48,7 +48,6 @@ function validateArgs(
     _: (string | number)[];
   }
 ) {
-  console.log("I'm in validateArgs");
   const allowedOpts = ['h', 'help', 'u', 'user', 'w', 'watch', 'o', 'output'];
 
   if (args.length == 0) {
