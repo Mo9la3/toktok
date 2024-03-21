@@ -4,17 +4,17 @@ import { path } from './deps.ts';
 export default async function recordUser(user: string, output?: string) {
   const roomId = await getRoomId(user);
   if (!roomId) {
-    console.error(`could not get roomId for ${user}`);
+    console.error(`\x1b[33mcould not get roomId for ${user}\x1b[0m`);
     return;
   }
   const url = await getLiveUrl(roomId);
   if (!url) {
-    console.error(`could not get live url for ${user}`);
+    console.error(`\x1b[31mcould not get live url for ${user}\x1b[0m`);
     return;
   }
   const isLive = await isUserInLive(roomId);
   if (!isLive) {
-    console.log(`${user} is offline`);
+    console.log(`\x1b[36m${user} is offline\x1b[0m`);
     return;
   }
 
