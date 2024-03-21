@@ -8,7 +8,13 @@ export default async function recordUser(user: string, output?: string) {
     console.error(`\x1b[33mcould not get roomId for ${user}\x1b[0m`);
     return;
   }
-  const url = await getLiveUrl(roomId);
+  try{
+    const url = await getLiveUrl(roomId);
+  }
+  catch (err) {
+    console.log(`========== could not get roomId for ${user} =============`);
+    console.log(`========== url = ${url} =============`);
+  }
   if (!url) {
     console.error(`\x1b[31mcould not get live url for ${user}\x1b[0m`);
     return;
