@@ -6,7 +6,7 @@ export default function watchUsers(usersstr: string, output?: string) {
 
     const checkUser = (i = 0) => {
       if (!window.recording[users[i]]) recordUser(users[i], output);
-      else console.log(`Still recording ${users[i]}`);
+      else console.log(`\x1b[32mStill recording ${users[i]}\x1b[0m`);
       setTimeout(() => {
         if (i < users.length - 1) checkUser(++i);
         else
