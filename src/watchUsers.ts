@@ -12,9 +12,9 @@ export default function watchUsers(usersstr: string, output?: string) {
           if (i < users.length - 1) checkUser(++i);
           else
             console.log(
-              `${new Date().toTimeString().slice(0, 8)}       Waiting for recheck in 3m...\n\n`
+              `${new Date().toTimeString().slice(0, 8)}       Waiting for recheck in 1m...\n\n`
             );
-        }, 2500);
+        }, 2800);
       };
       checkUser();
     } catch (error) {
