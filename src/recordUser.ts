@@ -2,39 +2,44 @@ import { writableStreamFromWriter } from './deps.ts';
 import { path } from './deps.ts';
 
 export default async function recordUser(user: string, output?: string) {
-  const roomId = await getRoomId(user);
-  if (!roomId) {
-    console.error(`\x1b[33mcould not get roomId for ${user}\x1b[0m`);
-    return;
-  }
-  const url = await getLiveUrl(roomId);
-  if (!url) {
-    console.error(`\x1b[31mcould not get live url for ${user}\x1b[0m`);
-    return;
-  }
-  const isLive = await isUserInLive(roomId);
-  if (!isLive) {
-    console.log(`\x1b[36m${user} is offline\x1b[0m`);
-    return;
-  }
+  try {
+    const roomId = await getRoomId(user);
+    if (!roomId) {
+      console.error(`\x1b[33mcould not get roomId for ${user}\x1b[0m`);
+      return;
+    }
+    const url = await getLiveUrl(roomId);
+    if (!url) {
+      console.error(`\x1b[31mcould not get live url for ${user}\x1b[0m`);
+      return;
+    }
+    const isLive = await isUserInLive(roomId);
+    if (!isLive) {
+      console.log(`\x1b[36m${user} is offline\x1b[0m`);
+      return;
+    }
 
-  const fileResponse = await fetch(url);
-  if (fileResponse.body) {
-    window.recording[user] = true;
-    console.log(`\x1b[32mStarted recording ${user}...\x1b[0m`);
+    const fileResponse = await fetch(url);
+    if (fileResponse.body) {
+      window.recording[user] = true;
+      console.log(`\x1b[32mStarted recording ${user}...\x1b[0m`);
 
-    const file = await Deno.open(filename(user, output), { write: true, create: true }).catch(
-      () => {
-        console.error('could not open output dir to write');
-        Deno.exit();
-      }
-    );
-    const writableStream = writableStreamFromWriter(file);
-    await fileResponse.body.pipeTo(writableStream);
-    window.recording[user] = false;
-    console.log(`${user}'s stream ended`);
+      const file = await Deno.open(filename(user, output), { write: true, create: true }).catch(
+        () => {
+          console.error('could not open output dir to write');
+          Deno.exit();
+        }
+      );
+      const writableStream = writableStreamFromWriter(file);
+      await fileResponse.body.pipeTo(writableStream);
+      window.recording[user] = false;
+      console.log(`${user}'s stream ended`);
+    }
+  } catch (error) {
+    console.error('An error occurred but the script will continue:', error);
   }
 }
+
 
 async function getRoomId(user: string) {
   return await fetch(`https://www.tiktok.com/@${user}/live`)
