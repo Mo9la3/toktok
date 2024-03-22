@@ -14,14 +14,14 @@ export default function watchUsers(usersstr: string, output?: string) {
             console.log(
               `${new Date().toTimeString().slice(0, 8)}       Waiting for recheck in 3m...\n\n`
             );
-        }, 3000);
+        }, 2500);
       };
       checkUser();
     } catch (error) {
       console.error('An error occurred but the script will continue:', error);
     }
 
-    setTimeout(watchUsersIter, 180000);
+    setTimeout(watchUsersIter, 60000);
   };
 
   watchUsersIter();
